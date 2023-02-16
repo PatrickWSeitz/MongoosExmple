@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 var port = process.env.port||3000;
 
 var db = require("./config/database");
+const { rawListeners } = require("process");
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
@@ -54,6 +55,42 @@ app.post("/deleteGame", function(req,res){
     Game.findByIdAndDelete(req.body.game).exec();
     res.redirect('gameList.html');
 })
+
+app.get("/getID::id", function(req, res){
+    console.log(req.params.id);
+    res.redirect("updatePage.html?id=" + req.params.id)
+});
+
+//Update route
+app.post("/updateGame", function(req, res){
+    console.log(req.body);
+    //res.redirect('gameList.html');
+    Game.findByIdAndUpdate(req.body.id, {game:req.body.game}, function(){
+        res.redirect("gameList.html")
+    })
+})
+
+//Unity route
+app.post("/unity", function(req, res){
+    console.log("Hello from Unity");
+
+    var newData = {
+        "level":req.body.level,
+        "timeElapsed":req.body.timeElapsed,
+        "name":req.body.name
+    }
+    console.log(newData);
+});
+
+app.get("/SendUnityData", function(req,res){
+    console.log("Request Made")
+    var dataToSend = {
+        "level":9000,
+        "timeElapsed":20100.32,
+        "name":"George Saban"
+    }
+    res.send(dataToSend);
+});
 
 app.use(express.static(__dirname+"/pages"));
 app.listen(port, function(){

@@ -37,12 +37,32 @@
                                 "Content-Type":"application/json"
                             },
                             body:JSON.stringify({
-                                game:game._id
+                                game:game
                             })
 
                         })
                     });
-                    gameElement.appendChild(deleteButton);
+                    gameElement.appendChild(deleteButton);                    
+
+                    var updateButton = document.createElement("button");
+                    updateButton.innerText ="Update Game";
+                    updateButton.addEventListener("click", function(){
+                        window.location.replace("/updatePage.html?id=" + game._id + "&name=" + game.game);
+                        //window.location.replace("/getID: " + game._id)
+                        // fetch request to server to update the game
+                        //location.reload();
+                       /* fetch("/getID" + game._id, {
+                            method:"GET",
+                            headers:{
+                                "Content-Type":"application/json"
+                            },
+                            /*body:JSON.stringify({
+                                game:game
+                            })
+
+                        })*/
+                    });
+                    gameElement.appendChild(updateButton);
                 }
             })
         })
